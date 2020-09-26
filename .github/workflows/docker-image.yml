@@ -18,3 +18,18 @@ jobs:
       run: docker build . --file Dockerfile --tag registry.chakmidlot.net/box_checker:1.0
     - name: Push Docker image
       run: docker push registry.chakmidlot.net/box_checker:1.0
+  
+  deploy:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: ls -a via ssh
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            cd /tmp
+            ls -a
+          host: chakmidlot.net
+          user: root
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
