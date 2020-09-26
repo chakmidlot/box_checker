@@ -1,7 +1,6 @@
 mod checker;
 mod output;
 
-use reqwest;
 use std::time::Duration;
 
 

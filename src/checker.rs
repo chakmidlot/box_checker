@@ -9,14 +9,12 @@ pub enum State {
 
 pub struct App {
     state: State,
-    error: bool,
 }
 
 impl App {
     pub fn new() -> App {
         App {
             state: State::SOLD,
-            error: false,
         }
     }
 
@@ -47,7 +45,7 @@ impl App {
                                 State::AVAILABLE
                             }
                         },
-                        Err(e) => {
+                        Err(_) => {
                             State::ERROR
                         }
                     }
@@ -55,7 +53,7 @@ impl App {
                     State::ERROR
                 }
             },
-            Err(e) => State::ERROR
+            Err(_) => State::ERROR
         }
     }
 }
