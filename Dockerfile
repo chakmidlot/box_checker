@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN mkdir src \
     && touch src/lib.rs \
-    && apt-get update -y && apt-get install -y libssl-dev
+    && apt-get update -y && apt-get install -y libssl-dev ca-certificates
 
 COPY Cargo.toml .
 
