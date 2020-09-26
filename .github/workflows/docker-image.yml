@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Login to Docker registry
-      run: docker login --username chakmidlot --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      run: docker login --username registry --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag registry.chakmidlot.net/box_checker:1.0
     - name: Push Docker image
