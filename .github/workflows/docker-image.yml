@@ -29,7 +29,8 @@ jobs:
         with:
           command: |
             docker pull registry.chakmidlot.net/box_checker:1.0
-            docker run docker run -it --rm --init -e TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }} -e TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }} --name box_hunter box_hunter:0.1
+            docker rm -f box_hunter:0.1
+            docker run docker run -e TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }} -e TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }} --name box_hunter box_hunter:0.1
           host: chakmidlot.net
           user: root
           key: ${{ secrets.SSH_PRIVATE_KEY}}
