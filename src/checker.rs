@@ -1,6 +1,8 @@
+use log::{info, warn};
+
 const URL: &str = "https://www.amazon.de/-/en/dp/B08H93ZRLL";
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum State {
     SOLD,
     AVAILABLE,
@@ -21,11 +23,15 @@ impl App {
     pub fn check(&mut self) -> Option<State> {
         let resp = App::query();
 
+        info!("Query result: {:?}", resp);
+
         if resp != self.state {
+            info!("Status changed: {:?} -> {:?}", self.state, resp);
             self.state = resp;
             Some(resp)
         }
         else {
+            info!("Status didn't change");
             self.state = resp;
             None
         }
@@ -36,7 +42,11 @@ impl App {
 
         match resp {
             Ok(resp) => {
-                if resp.status() == reqwest::StatusCode::OK {
+                let status = resp.status();
+
+                info!("Response status: {}", status);
+
+                if status == reqwest::StatusCode::OK {
                     match resp.text() {
                         Ok(text) => {
                             if text.contains("Currently unavailable.") {
@@ -45,15 +55,20 @@ impl App {
                                 State::AVAILABLE
                             }
                         },
-                        Err(_) => {
+                        Err(err) => {
+                            warn!("Failed to get response text: {:?}", err);
                             State::ERROR
                         }
                     }
                 } else {
+                    warn!("Wrong response");
                     State::ERROR
                 }
             },
-            Err(_) => State::ERROR
+            Err(err) => {
+                warn!("Query failed: {:?}", err);
+                State::ERROR
+            }
         }
     }
 }

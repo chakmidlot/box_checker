@@ -1,3 +1,4 @@
+use log::{info, warn};
 use crate::checker::State;
 
 pub fn send(message: State) {
@@ -10,9 +11,19 @@ pub fn send(message: State) {
         State::ERROR => "x_x"
     };
 
+    info!("Send notification with {}", text);
+
+
     let url = format!("https://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}",
                       token, chat_id, text);
-    reqwest::blocking::get(&url);
+    let response = reqwest::blocking::get(&url);
+
+    match response {
+        Ok(resp) if resp.status() == reqwest::StatusCode::OK =>
+            warn!("Telegram notification failed: {}", resp.status()),
+        Err(_) => warn!("Telegram request failed"),
+        _ => {}
+    }
 }
 
 
