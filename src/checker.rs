@@ -1,6 +1,6 @@
 use log::{info, warn};
 
-const URL: &str = "https://www.amazon.de/-/en/dp/B08H93ZRLL";
+const URL: &str = "https://www.xbox.com/de-de/configure/8WJ714N3RBTL";
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum State {
@@ -49,7 +49,7 @@ impl App {
                 if status == reqwest::StatusCode::OK {
                     match resp.text() {
                         Ok(text) => {
-                            if text.contains("Currently unavailable.") {
+                            if text.contains("btn-primary\">Nicht vorrätig</button>") {
                                 State::SOLD
                             } else {
                                 State::AVAILABLE
